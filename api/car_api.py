@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, UploadFile, File
 from pydantic import BaseModel
-from database import get_db  # Уточняем путь к `get_db`
-from database.models import Photo  # Убедись, что файл models.py содержит Photo
+from database import get_db
+from database.models import Photo
 import random, imghdr
 
 
@@ -36,10 +36,10 @@ async def delete_car(id):
 
 
 @car_router.post("/add_photoCAR")
-async def add_photo2(photo_id: int, photo_file: UploadFile = File(...)):
+async def add_photo2(car_id: int, photo_file: UploadFile = File(...)):
     db = next(get_db())
     file_id = random.randint(1, 10000000000000)
-    file_path = f"database/photos/photo_{file_id}_{photo_id}.jpg"
+    file_path = f"database/photos/photo_{file_id}_{car_id}.jpg"
 
     with open(file_path, "wb") as photo_in_project:
         photo_to_save = await photo_file.read()
@@ -47,7 +47,7 @@ async def add_photo2(photo_id: int, photo_file: UploadFile = File(...)):
         print(photo_type)
         photo_in_project.write(photo_to_save)
 
-    new_photo = Photo(car_id=photo_id, filename=file_path, filepath=file_path)  # <-- исправлено
+    new_photo = Photo(car_id=car_id, filename=file_path, filepath=file_path)  # <-- исправлено
     db.add(new_photo)
     db.commit()
 
