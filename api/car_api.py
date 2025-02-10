@@ -47,7 +47,7 @@ async def add_photo2(car_id: int, photo_file: UploadFile = File(...)):
         print(photo_type)
         photo_in_project.write(photo_to_save)
 
-    new_photo = Photo(car_id=car_id, filename=file_path, filepath=file_path)  # <-- исправлено
+    new_photo = Photo(car_id=car_id, filename=file_path, filepath=file_path)
     db.add(new_photo)
     db.commit()
 
